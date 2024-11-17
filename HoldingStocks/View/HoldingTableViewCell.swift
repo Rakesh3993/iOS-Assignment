@@ -20,7 +20,7 @@ class HoldingTableViewCell: UITableViewCell {
     private var quantityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .light)
         return label
     }()
     
@@ -29,7 +29,7 @@ class HoldingTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
         label.text = Constants.netQuantity
-        label.font = UIFont.systemFont(ofSize: 12, weight: .light)
+        label.font = UIFont.systemFont(ofSize: 11, weight: .light)
         return label
     }()
     
@@ -45,7 +45,7 @@ class HoldingTableViewCell: UITableViewCell {
     private var ltpLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
@@ -79,7 +79,7 @@ class HoldingTableViewCell: UITableViewCell {
     private var pnlCalculationLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
@@ -120,7 +120,7 @@ class HoldingTableViewCell: UITableViewCell {
     
     func configure(with model: HoldingViewModel) {
         symbolLabel.text = model.symbol
-        ltpLabel.text = "\(Constants.rupeeSign) \(model.ltp)"
+        ltpLabel.text = "\(Constants.rupeeSign)\(String(format: "%.2f", model.ltp))"
         quantityLabel.text = "\(model.quantity)"
         calculation(with: model)
     }

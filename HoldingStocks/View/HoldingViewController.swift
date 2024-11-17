@@ -25,6 +25,14 @@ class HoldingViewController: UIViewController {
         return tableView
     }()
     
+    private var navigationSeparator: UIView = {
+        let view = UIView()
+        view.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 1).isActive = true
+        view.backgroundColor = .gray
+        return view
+    }()
+    
     private lazy var expandableView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -39,6 +47,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -46,6 +55,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -62,6 +72,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -69,6 +80,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -76,6 +88,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -83,6 +96,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         return label
     }()
     
@@ -97,6 +111,7 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.textColor = UIColor.black.withAlphaComponent(0.6)
         label.text = Constants.profitLossText
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -125,6 +140,15 @@ class HoldingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        return label
+    }()
+    
+    private var profitLossPercent: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.black.withAlphaComponent(0.6)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
     
@@ -132,7 +156,7 @@ class HoldingViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         [holdingTableView, expandableView].forEach(view.addSubview)
-        [profitHorizontalStack, profitLossValueLabel, currValLabel, currentValueLabel, totalInvestment, totalInvestmentLabel, todayPandL, todayPandLValue, separator].forEach(expandableView.addSubview)
+        [profitHorizontalStack, profitLossValueLabel, profitLossPercent, currValLabel, currentValueLabel, totalInvestment, totalInvestmentLabel, todayPandL, todayPandLValue, separator].forEach(expandableView.addSubview)
         holdingTableView.delegate = self
         holdingTableView.dataSource = self
         setupConstraits()
@@ -181,6 +205,7 @@ class HoldingViewController: UIViewController {
                 target: self,
                 action: nil
             ),
+            UIBarButtonItem(customView: navigationSeparator),
             UIBarButtonItem(
                 image: arrow,
                 style: .done,
@@ -213,8 +238,11 @@ class HoldingViewController: UIViewController {
             profitHorizontalStack.bottomAnchor.constraint(equalTo: expandableView.bottomAnchor, constant: -30),
             profitHorizontalStack.leadingAnchor.constraint(equalTo: expandableView.leadingAnchor, constant: 30),
             
+            profitLossPercent.bottomAnchor.constraint(equalTo: expandableView.bottomAnchor, constant: -30),
+            profitLossPercent.trailingAnchor.constraint(equalTo: expandableView.trailingAnchor, constant: -20),
+            
             profitLossValueLabel.bottomAnchor.constraint(equalTo: expandableView.bottomAnchor, constant: -30),
-            profitLossValueLabel.trailingAnchor.constraint(equalTo: expandableView.trailingAnchor, constant: -30),
+            profitLossValueLabel.trailingAnchor.constraint(equalTo: profitLossPercent.leadingAnchor, constant: -3),
             
             currValLabel.topAnchor.constraint(equalTo: expandableView.topAnchor, constant: 20),
             currValLabel.leadingAnchor.constraint(equalTo: expandableView.leadingAnchor, constant: 20),
@@ -253,10 +281,13 @@ class HoldingViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     let currentInvestDiff = (self?.currentValue ?? 0.0) - (self?.totalInvest ?? 0.0)
+                    let pnlPercent = (currentInvestDiff / (self?.totalInvest ?? 0.0)) * 100
                     self?.profitLossValueLabel.textColor = (currentInvestDiff < 0) ? ColorCode.redPnLTextColor : ColorCode.greenPnLTextColor
-                    self?.profitLossValueLabel.text =  String(format: "%.2f", currentInvestDiff)
+                    self?.profitLossPercent.textColor = (currentInvestDiff < 0) ? ColorCode.redPnLTextColor : ColorCode.greenPnLTextColor
+                    self?.profitLossValueLabel.text =  String(format: "\(Constants.rupeeSign) %.2f", currentInvestDiff)
+                    self?.profitLossPercent.text = "(\(String(format: "%.2f", pnlPercent))%)"
                     self?.todayPandLValue.textColor = (self!.todayPNLValue < 0) ? ColorCode.redPnLTextColor : ColorCode.greenPnLTextColor
-                    self?.todayPandLValue.text = String(format: "%.2f", self?.todayPNLValue ?? 0.0)
+                    self?.todayPandLValue.text = String(format: "\(Constants.rupeeSign) %.2f", self?.todayPNLValue ?? 0.0)
                     self?.holdingTableView.reloadData()
                 }
             case .failure(let error):
