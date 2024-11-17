@@ -11,10 +11,6 @@ enum ErrorConstants: Error {
     case ErrorInJsonDecoding
 }
 
-struct Constants {
-    static let url = "https://35dee773a9ec441e9f38d5fc249406ce.api.mockbin.io/"
-}
-
 class APICaller {
     static let shared = APICaller()
     

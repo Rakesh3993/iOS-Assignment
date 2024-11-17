@@ -96,7 +96,7 @@ class HoldingViewController: UIViewController {
     private lazy var profitLossLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black.withAlphaComponent(0.6)
-        label.text = "Profit & Loss*"
+        label.text = Constants.profitLossText
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,7 +104,7 @@ class HoldingViewController: UIViewController {
     private lazy var arrowButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(systemName: "chevron.up")
+        let image = UIImage(systemName: Constants.upwardArrow)
         image?.withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.tintColor = .systemGray
@@ -143,26 +143,26 @@ class HoldingViewController: UIViewController {
         isExpandable.toggle()
         
         expandableViewHeightConstraint?.constant = isExpandable ? 230 : 70
-        let buttonTitle = isExpandable ? UIImage(systemName: "chevron.down") : UIImage(systemName: "chevron.up")
+        let buttonTitle = isExpandable ? UIImage(systemName: Constants.downwardArrow) : UIImage(systemName: Constants.upwardArrow)
         arrowButton.setImage(buttonTitle, for: .normal)
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
         
-        currValLabel.text = isExpandable ? "Current value*" : ""
-        currentValueLabel.text = isExpandable ? String(format: "₹ %.2f", currentValue) : ""
-        totalInvestment.text = isExpandable ? "Total Investment*" : ""
-        totalInvestmentLabel.text = isExpandable ? String(format: "₹ %.2f", totalInvest) : ""
-        todayPandL.text = isExpandable ? "Today's Profit & Loss*" : ""
+        currValLabel.text = isExpandable ? Constants.currentValueText : ""
+        currentValueLabel.text = isExpandable ? String(format: "\(Constants.rupeeSign) %.2f", currentValue) : ""
+        totalInvestment.text = isExpandable ? Constants.totalInvestmentText : ""
+        totalInvestmentLabel.text = isExpandable ? String(format: "\(Constants.rupeeSign) %.2f", totalInvest) : ""
+        todayPandL.text = isExpandable ? Constants.todayProfitLossText : ""
     }
     
     private func setupNavigationBar(){
-        let personImage = UIImage(systemName: "person.circle")?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
-        let magnifyingGlass = UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
-        let arrow = UIImage(systemName: "arrow.up.arrow.down")?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
+        let personImage = UIImage(systemName: Constants.profileImage)?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
+        let magnifyingGlass = UIImage(systemName: Constants.searchImage)?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
+        let arrow = UIImage(systemName: Constants.upDownArrowImage)?.withRenderingMode(.alwaysOriginal).withTintColor(.white)
         
-        let portfolio = UIBarButtonItem(title: "Portfolio", image: nil, target: self, action: nil)
+        let portfolio = UIBarButtonItem(title: Constants.portfolioText, image: nil, target: self, action: nil)
         portfolio.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
         
         navigationItem.leftBarButtonItems = [

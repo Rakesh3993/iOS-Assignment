@@ -28,7 +28,7 @@ class HoldingTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
-        label.text = "NET QTY:"
+        label.text = Constants.netQuantity
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         return label
     }()
@@ -37,7 +37,7 @@ class HoldingTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
-        label.text = "LTP:"
+        label.text = Constants.ltpText
         label.font = UIFont.systemFont(ofSize: 10, weight: .light)
         return label
     }()
@@ -71,7 +71,7 @@ class HoldingTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .gray
-        label.text = "P&L:"
+        label.text = Constants.pnlText
         label.font = UIFont.systemFont(ofSize: 10, weight: .light)
         return label
     }()
@@ -120,7 +120,7 @@ class HoldingTableViewCell: UITableViewCell {
     
     func configure(with model: HoldingViewModel) {
         symbolLabel.text = model.symbol
-        ltpLabel.text = "₹ \(model.ltp)"
+        ltpLabel.text = "\(Constants.rupeeSign) \(model.ltp)"
         quantityLabel.text = "\(model.quantity)"
         calculation(with: model)
     }
@@ -130,7 +130,7 @@ class HoldingTableViewCell: UITableViewCell {
         let totalInvest = model.avgPrice * Double(model.quantity)
         let totalPNL = currVal - totalInvest
         let formattedPNL = String(format: "%.2f", totalPNL)
-        pnlCalculationLabel.text = "₹ \(formattedPNL)"
+        pnlCalculationLabel.text = "\(Constants.rupeeSign) \(formattedPNL)"
         pnlCalculationLabel.textColor = (totalPNL < 0) ? ColorCode.redPnLTextColor : ColorCode.greenPnLTextColor
     }
 }
